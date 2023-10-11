@@ -18,16 +18,24 @@ except:
     print("ERROR CONNECTING TO DATABASE")
 
 def SignIn(data):
-    cur.execute(f"SELECT email, password FROM User WHERE email='{data['email']}'")
+    cur.execute(f"SELECT * FROM User WHERE email='{data['email']}'")
     info = cur.fetchone()
 
     if not info:
         print("No User Found")
 
     else:
-        if data['password'] == info[1]:
+        if data['password'] == info[2]:
             print("LOGGED IN!")
-            pg.Home()
+            pg.Home({
+                "id" : int(info[0]),
+                "name" : info[1],
+                "password" : info[2],
+                "email" : info[3],
+                "phone_num" : int(info[4]),
+                "age" : int(info[5]),
+                "is_admin" : info[6],
+            })
 
         else:
             print("INCORRECT")
@@ -58,3 +66,9 @@ def create_user(user_info):
     con.commit()
 
     print("CREATED A NEW USER")
+
+def search_movie(name):
+    cur.execute(f"SELECT * FROM Movie WHERE name LIKE '%{name}%' ORDER BY release_date ASC")
+    movies = cur.fetchall()
+
+    return movies
