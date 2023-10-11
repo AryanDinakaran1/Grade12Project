@@ -49,12 +49,21 @@ def Authentication():
             print("WRONG OPTION SELECTED\n")
             Authentication()
 
+def Book():
+    pass
+
+def Search():
+    pass
+
+def Recommend():
+    pass
+
 def Home():
     while True:
         print("Welcome!")
         print("1] Book a Movie")
         print("2] Search a Movie")
-        print("3] Reccomend a Movie")
+        print("3] Recommend a Movie")
         print("4] Logout")
         print("5] EXIT")
 

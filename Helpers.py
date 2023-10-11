@@ -1,8 +1,5 @@
 import mysql.connector
-
 import Pages as pg
-
-# cur = con.connect_to_database()['cursor']
 
 cur = {}
 
@@ -20,12 +17,6 @@ try:
 except:
     print("ERROR CONNECTING TO DATABASE")
 
-def Encrypt():
-    pass
-
-def Decrypt():
-    pass
-
 def SignIn(data):
     cur.execute(f"SELECT email, password FROM User WHERE email='{data['email']}'")
     info = cur.fetchone()
@@ -37,6 +28,7 @@ def SignIn(data):
         if data['password'] == info[1]:
             print("LOGGED IN!")
             pg.Home()
+
         else:
             print("INCORRECT")
 
@@ -51,7 +43,6 @@ def create_user(user_info):
         if user_info['email'] == row[3]:
             user_exists = True
 
-    # CHECK IF USER ALREADY EXISTS
     if user_exists:
         print("USER ALREADY EXISTS\n")
         pg.Authentication()
