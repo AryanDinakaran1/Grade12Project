@@ -4,9 +4,11 @@ import Pages as pg
 
 # cur = con.connect_to_database()['cursor']
 
+cur = {}
+
 try:
     con = mysql.connector.connect(
-                host="localhost",  
+                host="localhost",
                 user="root",       
                 password="password",
                 port=3306,         
@@ -24,11 +26,25 @@ def Encrypt():
 def Decrypt():
     pass
 
+def SignIn(data):
+    cur.execute(f"SELECT email, password FROM User WHERE email='{data['email']}'")
+    info = cur.fetchone()
+
+    if not info:
+        print("No User Found")
+
+    else:
+        if data['password'] == info[1]:
+            print("LOGGED IN!")
+            pg.Home()
+        else:
+            print("INCORRECT")
+
 def create_user(user_info):
 
     cur.execute("SELECT * FROM User")
     rows = cur.fetchall()
-
+    
     user_exists = False
 
     for row in rows:

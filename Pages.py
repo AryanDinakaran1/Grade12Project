@@ -1,6 +1,5 @@
 import Helpers as hlp
 
-
 def SignUp():
     name = input("Enter Name: ")
     email = input("Enter Email: ")
@@ -21,7 +20,15 @@ def SignUp():
     Home()
 
 def SignIn():
-    pass
+    email = input("Enter Email: ")
+    password = input("Enter Password: ")
+
+    data = {
+        'email' : email,
+        'password' : password,
+    }
+
+    hlp.SignIn(data)
 
 def Authentication():
 
@@ -43,7 +50,33 @@ def Authentication():
             Authentication()
 
 def Home():
-    Authentication()
+    while True:
+        print("Welcome!")
+        print("1] Book a Movie")
+        print("2] Search a Movie")
+        print("3] Reccomend a Movie")
+        print("4] Logout")
+        print("5] EXIT")
+
+        opt = input("Enter Option: ")
+
+        if opt == 1:
+            pass
+
+        elif opt == 2:
+            pass
+
+        elif opt == 3:
+            pass
+
+        elif opt == 4:
+            Authentication()
+
+        elif opt == 5:
+            break
+
+        else:
+            print("WRONG INPUT")
 
 if __name__ == '__main__':
-    Home()
+    Authentication()
