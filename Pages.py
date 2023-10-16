@@ -37,14 +37,25 @@ def Authentication():
         print("2] Sign In")
         print("3] EXIT")
 
-        opt = int(input("Choose Option Number: "))
+        opt = input("Choose Option Number: ")
+
+        try:
+            opt = int(opt)
+
+        except:
+            print("WRONG OPTION SELECTED\n")
+            Authentication()
 
         if opt == 1:
             SignUp()
+
         elif opt == 2:
             SignIn()
+
         elif opt == 3:
+            print("EXIT WITH 0 ERRORS")
             break
+
         else:
             print("WRONG OPTION SELECTED\n")
             Authentication()
@@ -52,7 +63,7 @@ def Authentication():
 def Book():
     pass
 
-def Search():
+def Search(data):
     name = input("Enter Movie Name: ")
     movies = hlp.search_movie(name)
 
@@ -62,8 +73,15 @@ def Search():
 
         movies_data.append({
             "id" : id+1,
-            "name" : movies[id][2]
+            "name" : movies[id][2],
+            "release_date" : movies[id][1],
+            "genre" : movies[id][3],
+            "rating" : movies[id][4],
         })
+
+    if movies_data == []:
+        print("\nNo Movie Found\n")
+        Home(data)
 
 
     print("\nMovies: ")
@@ -72,13 +90,28 @@ def Search():
     print()
 
     movie_id = int(input("Enter Movie ID:"))
-    MoviePage(movies_data[movie_id])
+    MoviePage(movies_data[movie_id-1], data)
 
-    
+def MoviePage(data, user_info):
+    print("Name: ", data["name"])
+    print("Release Date: ", data["release_date"])
+    print("Genre: ", data["genre"])
+    print("Rating: ", data["rating"])
 
-def MoviePage(data):
-    pass
+    print()
 
+    print("1] Back to Searching")
+    print("2] Back to Home")
+
+    opt = int(input("Enter Option: "))
+
+    if opt == 1:
+        Search(user_info)
+    elif opt == 2:
+        Home(user_info)
+    else:
+        print("WRONG INPUT")
+        MoviePage(data, user_info)
 
 def Recommend():
     pass
@@ -94,13 +127,19 @@ def Home(user_info):
             print("4] Logout")
             print("5] EXIT")
 
-            opt = int(input("Enter Option: "))
-            
+            opt = input("Enter Option: ")
+
+            try:
+                opt = int(opt)
+            except:
+                print("\nWRONG OPTION SELECTED\n")
+                Home(user_info)
+
             if opt == 1:
                 pass
 
             elif opt == 2:
-                Search()
+                Search(user_info)
 
             elif opt == 3:
                 pass
@@ -113,6 +152,7 @@ def Home(user_info):
 
             else:
                 print("WRONG INPUT")
+                Home(user_info)
 
     elif user_info['is_admin'] == "True":
         while True:
