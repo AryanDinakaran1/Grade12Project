@@ -20,7 +20,7 @@ except:
 def SignIn(data):
     cur.execute(f"SELECT * FROM User WHERE email='{data['email']}'")
     info = cur.fetchone()
-
+    
     if not info:
         print("No User Found")
 
@@ -69,6 +69,18 @@ def create_user(user_info):
 
 def search_movie(name):
     cur.execute(f"SELECT * FROM Movie WHERE name LIKE '%{name}%' ORDER BY release_date ASC")
+    movies = cur.fetchall()
+
+    return movies
+
+def get_movies():
+    cur.execute(f"SELECT * FROM Movie")
+    movies = cur.fetchall()
+
+    return movies
+
+def get_movies_by_genre(genre):
+    cur.execute(f"SELECT * FROM Movie WHERE name = '{genre}'")
     movies = cur.fetchall()
 
     return movies

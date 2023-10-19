@@ -113,7 +113,17 @@ def MoviePage(data, user_info):
         print("WRONG INPUT")
         MoviePage(data, user_info)
 
-def Recommend():
+def MovieSettings(user_info):
+
+    while True:
+        print("1] Add New Movie")
+        print("2] Delete Movie")
+        print("3] Back")
+
+def ScheduleSettings():
+    pass
+
+def ManageAdmin():
     pass
 
 def Home(user_info):
@@ -123,9 +133,8 @@ def Home(user_info):
             print(f"Welcome, {user_info['name']}!")
             print("1] Book a Movie")
             print("2] Search a Movie")
-            print("3] Recommend a Movie")
-            print("4] Logout")
-            print("5] EXIT")
+            print("3] Logout")
+            print("4] EXIT")
 
             opt = input("Enter Option: ")
 
@@ -136,18 +145,15 @@ def Home(user_info):
                 Home(user_info)
 
             if opt == 1:
-                pass
+                Book()
 
             elif opt == 2:
                 Search(user_info)
 
             elif opt == 3:
-                pass
-
-            elif opt == 4:
                 Authentication()
 
-            elif opt == 5:
+            elif opt == 4:
                 break
 
             else:
@@ -159,11 +165,11 @@ def Home(user_info):
             print(f"Welcome, {user_info['name']}!")
             print("1] Movie Settings")
             print("2] Schedule Settings")
-            print("3] Logout")
-            print("4] EXIT")
+            print("3] Manage Admin")
+            print("4] Logout")
+            print("5] EXIT")
 
-            opt = int(input("Etner Option: "))
-        
+            opt = int(input("Enter Option: "))
 
 if __name__ == '__main__':
     Authentication()
