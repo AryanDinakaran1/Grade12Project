@@ -23,26 +23,72 @@ movie_data = [
 ]
 
 # Connect to the database
-conn = mysql.connector.connect(db_config)
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="password",
+    database="mydb"
+)
 cursor = conn.cursor()
 
 # Create the Movies table
-create_table_query = """
-CREATE TABLE IF NOT EXISTS Movies (
+create_table_movie = """
+CREATE TABLE IF NOT EXISTS Movie (
     movie_id INT PRIMARY KEY,
-    movie_name VARCHAR(255) NOT NULL,
-    genre VARCHAR(255),
+    movie_name VARCHAR(100),
+    genre VARCHAR(100),
     release_date DATE,
     rating INT(10)
 )
 """
-cursor.execute(create_table_query)
+
+create_table_user = """
+CREATE TABLE IF NOT EXISTS User (
+    id INT PRIMARY KEY,
+    name VARCHAR(100),
+    password VARCHAR(100),
+    email VARCHAR(100),
+    age INT(10),
+    is_admin VARCHAR(100)
+)
+"""
+
+create_table_schedule = """
+CREATE TABLE IF NOT EXISTS Schedule (
+    id INT PRIMARY KEY,
+    movie_id INT(10),
+    datetime VARCHAR(100)
+)
+"""
+
+create_table_ticket = """
+CREATE TABLE IF NOT EXISTS Ticket (
+    id INT PRIMARY KEY,
+    user_id INT(10),
+    schedule_id INT(10)
+)
+"""
+
+create_table_actor = """
+CREATE TABLE IF NOT EXISTS Actor (
+    id INT PRIMARY KEY,
+    name VARCHAR(100)
+)
+"""
+
+cursor.execute(create_table_movie)
+cursor.execute(create_table_user)
+cursor.execute(create_table_schedule)
+cursor.execute(create_table_ticket)
+cursor.execute(create_table_actor)
 
 # Insert movie records into the database
-insert_query = "INSERT INTO Movies (movie_id, movie_name, genre, release_date, rating) VALUES (%s, %s, %s, %s, %s)"
+# create_admin = "INSERT INTO User (id, name, password, email, phone_num, age, is_admin) VALUES (1, 'Aryan Dinakaran', 'aryandinakaran@protonmail.com', 17, 'True')"
+# cursor.execute(create_admin)
+
+insert_query = "INSERT INTO Movie (movie_id, movie_name, genre, release_date, rating) VALUES (%s, %s, %s, %s, %s)"
 for movie in movie_data:
     cursor.execute(insert_query, movie)
 
-# Commit the changes and close the connection
 conn.commit()
 conn.close()

@@ -32,9 +32,8 @@ def SignIn(data):
                 "name" : info[1],
                 "password" : info[2],
                 "email" : info[3],
-                "phone_num" : int(info[4]),
-                "age" : int(info[5]),
-                "is_admin" : info[6],
+                "age" : int(info[4]),
+                "is_admin" : info[5],
             })
 
         else:
@@ -61,14 +60,14 @@ def create_user(user_info):
     else:
         set_id = rows[len(rows)-1][0] + 1
 
-    query = f"INSERT INTO User(id, name, password, email, phone_num, age, is_admin) VALUES ({set_id},'{user_info['name']}','{user_info['password']}','{user_info['email']}',{user_info['phone_num']},{user_info['age']},'{user_info['is_admin']}')"
+    query = f"INSERT INTO User(id, name, password, email, age, is_admin) VALUES ({set_id},'{user_info['name']}','{user_info['password']}','{user_info['email']}',{user_info['age']},'{user_info['is_admin']}')"
     cur.execute(query)
     con.commit()
 
     print("CREATED A NEW USER")
 
 def search_movie(name):
-    cur.execute(f"SELECT * FROM Movie WHERE name LIKE '%{name}%' ORDER BY release_date ASC")
+    cur.execute(f"SELECT * FROM Movie WHERE movie_name LIKE '%{name}%' ORDER BY release_date ASC")
     movies = cur.fetchall()
 
     return movies
@@ -79,8 +78,44 @@ def get_movies():
 
     return movies
 
+def get_movie_by_id(id):
+    cur.execute(f"SELECT * FROM Movie WHERE movie_id = {id}")
+    movie = cur.fetchone()
+
+    return movie
+
 def get_movies_by_genre(genre):
-    cur.execute(f"SELECT * FROM Movie WHERE name = '{genre}'")
+    cur.execute(f"SELECT * FROM Movie WHERE genre = '{genre}'")
     movies = cur.fetchall()
 
     return movies
+
+def book_ticket(user_info, movie, cost):
+
+    cur.execute("SELECT * FROM Ticket")
+    rows = cur.fetchall()
+
+    id = 0
+
+    tickets = []
+
+    for row in rows:
+        tickets.append(row)
+
+    if tickets == [] or tickets == None:
+        id = 1
+
+    else:
+        id = len(tickets) + 1
+
+    print(tickets)
+
+    try:
+        cur.execute(f"INSERT INTO Ticket(id, user_id, movie_id, cost) VALUES ({id}, {user_info['id']}, {movie[0]}, {cost})")
+        con.commit()
+
+    except Exception as e:
+        print(e)
+        return False
+
+    return True

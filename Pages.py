@@ -3,7 +3,6 @@ import Helpers as hlp
 def SignUp():
     name = input("Enter Name: ")
     email = input("Enter Email: ")
-    phone_num = int(input("Enter Phone Number: "))
     age = int(input("Enter Age: "))
     password = input("Enter Password: ")
 
@@ -11,13 +10,12 @@ def SignUp():
         "name": name,
         "password": password,
         "email": email,
-        "phone_num": phone_num,
         "age": age,
         "is_admin": False
     }
 
     hlp.create_user(data)
-    Home()
+    Home(data)
 
 def SignIn():
     email = input("Enter Email: ")
@@ -60,8 +58,118 @@ def Authentication():
             print("WRONG OPTION SELECTED\n")
             Authentication()
 
-def Book():
-    pass
+def Book(user_info):
+    movies = hlp.get_movies()
+
+    for movie in movies:
+        print(f"{movie[0]}] {movie[1]}")
+
+    opt = input("Choose Option: ")
+
+    try:
+        opt = int(opt)
+    except:
+        print("WRONG OPTION SELECTED")
+        Home(user_info)
+
+    Payment(user_info, opt)
+
+def Payment(user_info, id):
+
+    movie = ()
+    try:
+
+        movie = hlp.get_movie_by_id(id)
+
+        if movie == None:
+            print("No Movie Found")
+            Book(user_info)
+
+    except:
+        print("Something Went Wrong... Try Agian!")
+        Book(user_info)
+
+    print(f"Name         : ", movie[1])
+    print(f"Genre        : ", movie[2])
+    print(f"Release Date : ", movie[3])
+    print(f"Rating       : ", movie[4])
+
+    print("1] Confirm Booking")
+    print("2] Back to Movie Selection")
+    print("3] Back to Home")
+
+    opt = input("Choose Option: ")
+
+    try:
+        opt = int(opt)
+
+    except:
+        print("WRONG OPTION SELECTED")
+        Payment(user_info, id)
+
+    if opt == 1:
+        Confirm(user_info, movie)
+    elif opt == 2:
+        Book(user_info)
+    elif opt == 3:
+        Home(user_info)
+    else:
+        print("WRONG OPTION SELECTED")
+        Payment(user_info, id)
+
+def Confirm(user_info, movie):
+    print(f"Name         : ", movie[1])
+    print(f"Genre        : ", movie[2])
+    print(f"Release Date : ", movie[3])
+    print(f"Rating       : ", movie[4])
+    
+    print("===============")
+
+    ticketPrice = 200
+    gst = (28/100)*ticketPrice
+
+    print(f"Ticket Price: ₹{ticketPrice}")
+    print(f"CGST: ₹{gst/2}")
+    print(f"SGST: ₹{gst/2}")
+    print(f"Total GST: ₹{gst}")
+
+    print("===============")
+    
+    print(f"Final Cost: {ticketPrice+gst}")
+
+    print("1] Book Ticket")
+    print("2] Cancel Payment")
+
+    opt = input("Choose an option: ")
+
+    try:
+        opt = int(opt)
+    except:
+        print("WRONG OPTION SELECTED")
+        Confirm(user_info, movie)
+
+    if opt == 1:
+
+        try:
+
+            is_booked = hlp.book_ticket(user_info, movie, (ticketPrice+gst))
+
+            if is_booked:
+                print("Ticket Booked... Enjoy your movie!")
+                Home(user_info)
+            else:
+                print("Payment could not be processed")
+                Confirm(user_info, movie)
+
+        except Exception as e:
+            print(e)
+            Confirm(user_info, movie)
+
+    elif opt == 2:
+        Book(user_info)
+    else:
+        print("WRONG OPTION SELECTED")
+        Confirm(user_info, movie)
 
 def Search(data):
     name = input("Enter Movie Name: ")
@@ -73,9 +181,9 @@ def Search(data):
 
         movies_data.append({
             "id" : id+1,
-            "name" : movies[id][2],
-            "release_date" : movies[id][1],
-            "genre" : movies[id][3],
+            "name" : movies[id][1],
+            "release_date" : movies[id][3],
+            "genre" : movies[id][2],
             "rating" : movies[id][4],
         })
 
@@ -113,12 +221,34 @@ def MoviePage(data, user_info):
         print("WRONG INPUT")
         MoviePage(data, user_info)
 
+def AddMovie(user_info):
+    pass
+
+def DeleteMovie(user_info):
+    pass
+
 def MovieSettings(user_info):
 
     while True:
         print("1] Add New Movie")
         print("2] Delete Movie")
         print("3] Back")
+
+        opt = input("Enter Option: ")
+
+        try:
+            opt = int(opt)
+        except:
+            print("ERROR")
+
+        if opt == 1:
+            AddMovie(user_info)
+        
+        elif opt == 2:
+            DeleteMovie(user_info)
+        
+        else:
+            Home(user_info)
 
 def ScheduleSettings():
     pass
@@ -145,7 +275,7 @@ def Home(user_info):
                 Home(user_info)
 
             if opt == 1:
-                Book()
+                Book(user_info)
 
             elif opt == 2:
                 Search(user_info)
@@ -173,3 +303,5 @@ def Home(user_info):
 
 if __name__ == '__main__':
     Authentication()
+
+
