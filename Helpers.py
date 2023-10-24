@@ -1,3 +1,5 @@
+import sys
+
 import mysql.connector
 import Pages as pg
 
@@ -98,10 +100,6 @@ def get_movies_by_genre(genre):
 
 def book_ticket(user_info, movie, cost):
 
-    print(user_info, "\n")
-    print(movie, "\n")
-    print(cost)
-
     cur.execute("SELECT * FROM Ticket")
     rows = cur.fetchall()
 
@@ -160,4 +158,10 @@ def create_movie(user_info, movie_info):
         print("Something Went Wrong", e)
         return False
     
+    return True
+
+def delete_movie_by_id(movie_id):
+    cur.execute(f"DELETE FROM Movie WHERE movie_id={movie_id}")
+    con.commit()
+
     return True

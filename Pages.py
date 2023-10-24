@@ -1,3 +1,4 @@
+import sys
 import Helpers as hlp
 
 def SignUp():
@@ -51,8 +52,7 @@ def Authentication():
             SignIn()
 
         elif opt == 3:
-            print("EXIT WITH 0 ERRORS")
-            break
+            sys.exit(0)
 
         else:
             print("WRONG OPTION SELECTED\n")
@@ -118,6 +118,7 @@ def Payment(user_info, id):
         Payment(user_info, id)
 
 def Confirm(user_info, movie):
+    # Display movie information
     print(f"Name         : ", movie[1])
     print(f"Genre        : ", movie[2])
     print(f"Release Date : ", movie[3])
@@ -144,15 +145,15 @@ def Confirm(user_info, movie):
 
     try:
         opt = int(opt)
-    
-    except:
+
+    except ValueError:
         print("WRONG OPTION SELECTED")
         Confirm(user_info, movie)
 
     if opt == 1:
-
         try:
-            is_booked = hlp.book_ticket(user_info, movie, (ticketPrice+gst))
+             
+            is_booked = hlp.book_ticket(user_info, movie, (ticketPrice + gst))
 
             if is_booked:
                 print("Ticket Booked... Enjoy your movie!")
@@ -166,6 +167,7 @@ def Confirm(user_info, movie):
             Confirm(user_info, movie)
 
     elif opt == 2:
+        # Assuming there's a function named Book
         Book(user_info)
     else:
         print("WRONG OPTION SELECTED")
@@ -253,7 +255,27 @@ def AddMovie(user_info):
         AddMovie(user_info)
 
 def DeleteMovie(user_info):
-    pass
+    movies = hlp.get_movies()
+
+    for movie in movies:
+        print(f"{movie[0]}] {movie[1]}")
+
+    opt = input("Enter an Option: ")
+
+    try:
+        opt = int(opt)
+
+        is_deleted = hlp.delete_movie_by_id(opt)
+
+        if is_deleted:
+            print("Movie Deleted")
+            MovieSettings(user_info)
+        else:
+            print("Could not find movie")
+            DeleteMovie(user_info)
+
+    except:
+        DeleteMovie(user_info)
 
 def MovieSettings(user_info):
 
@@ -346,7 +368,7 @@ def Home(user_info):
                 Authentication()
 
             elif opt == 5:
-                break
+                sys.exit(0)
 
             else:
                 print("WRONG INPUT")
@@ -379,7 +401,7 @@ def Home(user_info):
                 Authentication()
 
             elif opt == 3:
-                break
+                sys.exit(0)
 
             else:
                 print("WRONG OPTION SELECTED")
