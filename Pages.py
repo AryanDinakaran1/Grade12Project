@@ -144,6 +144,7 @@ def Confirm(user_info, movie):
 
     try:
         opt = int(opt)
+    
     except:
         print("WRONG OPTION SELECTED")
         Confirm(user_info, movie)
@@ -151,7 +152,6 @@ def Confirm(user_info, movie):
     if opt == 1:
 
         try:
-
             is_booked = hlp.book_ticket(user_info, movie, (ticketPrice+gst))
 
             if is_booked:
@@ -353,12 +353,13 @@ def Home(user_info):
                 Home(user_info)
 
     elif user_info['is_admin'] == "True":
+        
         while True:
             print(f"Welcome, {user_info['name']}!")
             print("1] Movie Settings")
-            print("2] Manage Admin")
-            print("3] Logout")
-            print("4] EXIT")
+            # print("2] Manage Admin")
+            print("2] Logout")
+            print("3] EXIT")
 
             opt = input("Enter Option: ")
 
@@ -371,13 +372,13 @@ def Home(user_info):
             if opt == 1:
                 MovieSettings(user_info)
 
-            elif opt == 2:
-                pass
+            # elif opt == 2:
+            #     pass
 
-            elif opt == 3:
+            elif opt == 2:
                 Authentication()
 
-            elif opt == 4:
+            elif opt == 3:
                 break
 
             else:

@@ -53,19 +53,12 @@ CREATE TABLE IF NOT EXISTS User (
 )
 """
 
-create_table_schedule = """
-CREATE TABLE IF NOT EXISTS Schedule (
-    id INT PRIMARY KEY,
-    movie_id INT(10),
-    datetime VARCHAR(100)
-)
-"""
-
 create_table_ticket = """
 CREATE TABLE IF NOT EXISTS Ticket (
     id INT PRIMARY KEY,
     user_id INT(10),
-    schedule_id INT(10)
+    movie_id INT(10),
+    cost VARCHAR(100)
 )
 """
 
@@ -78,7 +71,6 @@ CREATE TABLE IF NOT EXISTS Actor (
 
 cursor.execute(create_table_movie)
 cursor.execute(create_table_user)
-cursor.execute(create_table_schedule)
 cursor.execute(create_table_ticket)
 cursor.execute(create_table_actor)
 

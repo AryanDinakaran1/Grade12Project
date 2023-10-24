@@ -98,6 +98,10 @@ def get_movies_by_genre(genre):
 
 def book_ticket(user_info, movie, cost):
 
+    print(user_info, "\n")
+    print(movie, "\n")
+    print(cost)
+
     cur.execute("SELECT * FROM Ticket")
     rows = cur.fetchall()
 
@@ -115,7 +119,7 @@ def book_ticket(user_info, movie, cost):
         id = len(tickets) + 1
 
     try:
-        cur.execute(f"INSERT INTO Ticket(id, user_id, movie_id, cost) VALUES ({id}, {user_info['id']}, {movie[0]}, {cost})")
+        cur.execute(f"INSERT INTO Ticket(id, user_id, movie_id, cost) VALUES ({id}, {user_info['id']}, {movie[0]}, '{cost}')")
         con.commit()
 
     except Exception as e:
