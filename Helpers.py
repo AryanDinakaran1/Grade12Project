@@ -66,6 +66,12 @@ def create_user(user_info):
 
     print("CREATED A NEW USER")
 
+def get_user_by_id(user_id):
+    cur.execute(f"SELECT * FROM User WHERE id = {user_id}")
+    user = cur.fetchone()
+
+    return user
+
 def search_movie(name):
     cur.execute(f"SELECT * FROM Movie WHERE movie_name LIKE '%{name}%' ORDER BY release_date ASC")
     movies = cur.fetchall()
@@ -108,8 +114,6 @@ def book_ticket(user_info, movie, cost):
     else:
         id = len(tickets) + 1
 
-    print(tickets)
-
     try:
         cur.execute(f"INSERT INTO Ticket(id, user_id, movie_id, cost) VALUES ({id}, {user_info['id']}, {movie[0]}, {cost})")
         con.commit()
@@ -118,4 +122,38 @@ def book_ticket(user_info, movie, cost):
         print(e)
         return False
 
+    return True
+
+def get_tickets_by_user_id(user_id):
+    cur.execute(f"SELECT Ticket.id, Ticket.user_id, Ticket.movie_id, Ticket.cost FROM Ticket, User WHERE User.id = Ticket.user_id && User.id = {user_id['id']}")
+    tickets = cur.fetchall()
+
+    return tickets
+
+def create_movie(user_info, movie_info):
+    cur.execute("SELECT * FROM Movie")
+    rows = cur.fetchall()
+
+    id = 0
+
+    movies = []
+
+    for row in rows:
+        movies.append(row)
+
+
+    if movies == [] or movies == None:
+        id = 1
+
+    else:
+        id = len(movies) + 1
+
+    try:
+        cur.execute(f"INSERT INTO Movie (movie_id, movie_name, genre, release_date, rating) VALUES ({id}, '{movie_info['name']}', '{movie_info['genre']}', '{movie_info['release_date']}', {movie_info['rating']})")
+        con.commit()
+
+    except Exception as e:
+        print("Something Went Wrong", e)
+        return False
+    
     return True
