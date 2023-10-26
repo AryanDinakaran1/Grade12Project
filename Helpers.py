@@ -172,7 +172,21 @@ def create_movie(user_info, movie_info):
     return True
 
 def delete_movie_by_id(movie_id):
-    cur.execute(f"DELETE FROM Movie WHERE movie_id={movie_id}")
-    con.commit()
+    try:
+        cur.execute(f"DELETE FROM Movie WHERE movie_id={movie_id}")
+        con.commit()
 
-    return True
+        return True
+    
+    except:
+        return False
+
+def delete_ticket_by_id(ticket_id):
+    try:
+        cur.execute(f"DELETE FROM Ticket WHERE ticket_id={ticket_id}")
+        con.commit()
+
+        return True
+    
+    except:
+        return False

@@ -58,121 +58,6 @@ def Authentication():
             print("WRONG OPTION SELECTED\n")
             Authentication()
 
-# def Book(user_info):
-#     movies = hlp.get_movies()
-
-#     for movie in movies:
-#         print(f"{movie[0]}] {movie[1]}")
-
-#     opt = input("Choose Option: ")
-
-#     try:
-#         opt = int(opt)
-#     except:
-#         print("WRONG OPTION SELECTED")
-#         Home(user_info)
-
-#     Payment(user_info, opt)
-
-# def Payment(user_info, id):
-
-#     movie = ()
-#     try:
-
-#         movie = hlp.get_movie_by_id(id)
-
-#         if movie == None:
-#             print("No Movie Found")
-#             Book(user_info)
-
-#     except:
-#         print("Something Went Wrong... Try Agian!")
-#         Book(user_info)
-
-#     print(f"Name         : ", movie[1])
-#     print(f"Genre        : ", movie[2])
-#     print(f"Release Date : ", movie[3])
-#     print(f"Rating       : ", movie[4])
-
-#     print("1] Confirm Booking")
-#     print("2] Back to Movie Selection")
-#     print("3] Back to Home")
-
-#     opt = input("Choose Option: ")
-
-#     try:
-#         opt = int(opt)
-
-#     except:
-#         print("WRONG OPTION SELECTED")
-#         Payment(user_info, id)
-
-#     if opt == 1:
-#         Confirm(user_info, movie)
-#     elif opt == 2:
-#         Book(user_info)
-#     elif opt == 3:
-#         Home(user_info)
-#     else:
-#         print("WRONG OPTION SELECTED")
-#         Payment(user_info, id)
-
-# def Confirm(user_info, movie):
-#     # Display movie information
-#     print(f"Name         : ", movie[1])
-#     print(f"Genre        : ", movie[2])
-#     print(f"Release Date : ", movie[3])
-#     print(f"Rating       : ", movie[4])
-    
-#     print("===============")
-
-#     ticketPrice = 200
-#     gst = (28/100)*ticketPrice
-
-#     print(f"Ticket Price: ₹{ticketPrice}")
-#     print(f"CGST: ₹{gst/2}")
-#     print(f"SGST: ₹{gst/2}")
-#     print(f"Total GST: ₹{gst}")
-
-#     print("===============")
-    
-#     print(f"Final Cost: {ticketPrice+gst}")
-
-#     print("1] Book Ticket")
-#     print("2] Cancel Payment")
-
-#     opt = input("Choose an option: ")
-
-#     try:
-#         opt = int(opt)
-
-#     except ValueError:
-#         print("WRONG OPTION SELECTED")
-#         Confirm(user_info, movie)
-
-#     if opt == 1:
-#         try:
-             
-#             is_booked = hlp.book_ticket(user_info, movie, (ticketPrice + gst))
-
-#             if is_booked:
-#                 print("Ticket Booked... Enjoy your movie!")
-#                 Home(user_info)
-#             else:
-#                 print("Payment could not be processed")
-#                 Confirm(user_info, movie)
-
-#         except Exception as e:
-#             print(e)
-#             Confirm(user_info, movie)
-
-#     elif opt == 2:
-#         # Assuming there's a function named Book
-#         Book(user_info)
-#     else:
-#         print("WRONG OPTION SELECTED")
-#         Confirm(user_info, movie)
-
 def display_theater(seats):
     for row in seats:
         row_str = ""
@@ -216,7 +101,12 @@ def book_seats(num_tickets):
 
 
 def book_movie(user):
-    print("Book Movie:")
+
+    movies = hlp.get_movies()
+
+    for movie in movies:
+        print(f"{movie[0]}] {movie[1]}")
+    
     movie_id = input("Enter the Movie ID you want to book: ")
     movie = hlp.get_movie_by_id(movie_id)
 
@@ -373,8 +263,30 @@ def MovieSettings(user_info):
         else:
             Home(user_info)
 
-def CancelTicket():
-    pass
+def CancelTicket(user_info, data):
+    print("Delete What?\n")
+
+    for info in data:
+        print(f"{info['id']}] {info['movie'][1]}")
+
+    opt = input("Enter Movie ID: ")
+
+    try:
+        opt = int(opt)
+    except:
+        print("Something Went Wrong")
+        CancelTicket(user_info, data)
+
+    is_deleted = hlp.delete_ticket_by_id(opt)
+
+    if is_deleted:
+        print("Deleted")
+        Home(user_info)
+    else:
+        print("Something went wrong?")
+        CancelTicket(user_info, data)
+
+    
 
 def Tickets(user_info):
     tickets = hlp.get_tickets_by_user_id(user_info)
@@ -385,13 +297,14 @@ def Tickets(user_info):
             'id' : ticket[0],
             'user' : hlp.get_user_by_id(ticket[1]),
             'movie' : hlp.get_movie_by_id(ticket[2]),
-            'cost' : ticket[3]
+            'time' : ticket[3],
+            'cost' : ticket[5]
         })
 
     for row in data:
-        print(f"{row['id']}] {row['movie'][1]} -> ₹{row['cost']}")
-
-    print("\n==========\n")
+        print("\n==========>")
+        print(f"{row['id']}] {row['movie'][1]} | ₹{row['cost']} | at {row['time']}")
+        print("==========>\n")
 
     print("1] Cancel Ticket")
     print("2] Back to Home")
@@ -405,8 +318,7 @@ def Tickets(user_info):
         Tickets(user_info)
 
     if opt == 1:
-        # CancelTicket(user_info, data)
-        pass
+        CancelTicket(user_info, data)
 
     elif opt == 2:
         Home(user_info)
@@ -471,7 +383,6 @@ def Home(user_info):
         while True:
             print(f"Welcome, {user_info['name']}!")
             print("1] Movie Settings")
-            # print("2] Manage Admin")
             print("2] Logout")
             print("3] EXIT")
 
@@ -486,14 +397,11 @@ def Home(user_info):
             if opt == 1:
                 MovieSettings(user_info)
 
-            # elif opt == 2:
-            #     pass
-
             elif opt == 2:
                 Authentication()
 
             elif opt == 3:
-                sys.exit(0)
+                Authentication()
 
             else:
                 print("WRONG OPTION SELECTED")
