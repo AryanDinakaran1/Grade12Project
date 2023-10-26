@@ -54,29 +54,25 @@ CREATE TABLE IF NOT EXISTS User (
 """
 
 create_table_ticket = """
-CREATE TABLE IF NOT EXISTS Ticket (
-    id INT PRIMARY KEY,
-    user_id INT(10),
-    movie_id INT(10),
-    cost VARCHAR(100)
-)
-"""
-
-create_table_actor = """
-CREATE TABLE IF NOT EXISTS Actor (
-    id INT PRIMARY KEY,
-    name VARCHAR(100)
-)
+    CREATE TABLE IF NOT EXISTS Ticket (
+        ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        movie_id INT,
+        showtimes VARCHAR(10),
+        num_tickets INT,
+        total_price DECIMAL(10, 2),
+        FOREIGN KEY (user_id) REFERENCES User(id),
+        FOREIGN KEY (movie_id) REFERENCES Movie(movie_id)
+    )
 """
 
 cursor.execute(create_table_movie)
 cursor.execute(create_table_user)
 cursor.execute(create_table_ticket)
-cursor.execute(create_table_actor)
 
 # Insert movie records into the database
-# create_admin = "INSERT INTO User (id, name, password, email, phone_num, age, is_admin) VALUES (1, 'Aryan Dinakaran', 'aryandinakaran@protonmail.com', 17, 'True')"
-# cursor.execute(create_admin)
+create_admin = "INSERT INTO User (id, name, password, email, age, is_admin) VALUES (1, 'Aryan Dinakaran', 'HelloWorld@123', 'aryandinakaran@protonmail.com', 17, 'True')"
+cursor.execute(create_admin)
 
 insert_query = "INSERT INTO Movie (movie_id, movie_name, genre, release_date, rating) VALUES (%s, %s, %s, %s, %s)"
 for movie in movie_data:

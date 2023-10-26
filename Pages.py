@@ -58,120 +58,194 @@ def Authentication():
             print("WRONG OPTION SELECTED\n")
             Authentication()
 
-def Book(user_info):
-    movies = hlp.get_movies()
+# def Book(user_info):
+#     movies = hlp.get_movies()
 
-    for movie in movies:
-        print(f"{movie[0]}] {movie[1]}")
+#     for movie in movies:
+#         print(f"{movie[0]}] {movie[1]}")
 
-    opt = input("Choose Option: ")
+#     opt = input("Choose Option: ")
 
-    try:
-        opt = int(opt)
-    except:
-        print("WRONG OPTION SELECTED")
-        Home(user_info)
+#     try:
+#         opt = int(opt)
+#     except:
+#         print("WRONG OPTION SELECTED")
+#         Home(user_info)
 
-    Payment(user_info, opt)
+#     Payment(user_info, opt)
 
-def Payment(user_info, id):
+# def Payment(user_info, id):
 
-    movie = ()
-    try:
+#     movie = ()
+#     try:
 
-        movie = hlp.get_movie_by_id(id)
+#         movie = hlp.get_movie_by_id(id)
 
-        if movie == None:
-            print("No Movie Found")
-            Book(user_info)
+#         if movie == None:
+#             print("No Movie Found")
+#             Book(user_info)
 
-    except:
-        print("Something Went Wrong... Try Agian!")
-        Book(user_info)
+#     except:
+#         print("Something Went Wrong... Try Agian!")
+#         Book(user_info)
 
-    print(f"Name         : ", movie[1])
-    print(f"Genre        : ", movie[2])
-    print(f"Release Date : ", movie[3])
-    print(f"Rating       : ", movie[4])
+#     print(f"Name         : ", movie[1])
+#     print(f"Genre        : ", movie[2])
+#     print(f"Release Date : ", movie[3])
+#     print(f"Rating       : ", movie[4])
 
-    print("1] Confirm Booking")
-    print("2] Back to Movie Selection")
-    print("3] Back to Home")
+#     print("1] Confirm Booking")
+#     print("2] Back to Movie Selection")
+#     print("3] Back to Home")
 
-    opt = input("Choose Option: ")
+#     opt = input("Choose Option: ")
 
-    try:
-        opt = int(opt)
+#     try:
+#         opt = int(opt)
 
-    except:
-        print("WRONG OPTION SELECTED")
-        Payment(user_info, id)
+#     except:
+#         print("WRONG OPTION SELECTED")
+#         Payment(user_info, id)
 
-    if opt == 1:
-        Confirm(user_info, movie)
-    elif opt == 2:
-        Book(user_info)
-    elif opt == 3:
-        Home(user_info)
-    else:
-        print("WRONG OPTION SELECTED")
-        Payment(user_info, id)
+#     if opt == 1:
+#         Confirm(user_info, movie)
+#     elif opt == 2:
+#         Book(user_info)
+#     elif opt == 3:
+#         Home(user_info)
+#     else:
+#         print("WRONG OPTION SELECTED")
+#         Payment(user_info, id)
 
-def Confirm(user_info, movie):
-    # Display movie information
-    print(f"Name         : ", movie[1])
-    print(f"Genre        : ", movie[2])
-    print(f"Release Date : ", movie[3])
-    print(f"Rating       : ", movie[4])
+# def Confirm(user_info, movie):
+#     # Display movie information
+#     print(f"Name         : ", movie[1])
+#     print(f"Genre        : ", movie[2])
+#     print(f"Release Date : ", movie[3])
+#     print(f"Rating       : ", movie[4])
     
-    print("===============")
+#     print("===============")
 
-    ticketPrice = 200
-    gst = (28/100)*ticketPrice
+#     ticketPrice = 200
+#     gst = (28/100)*ticketPrice
 
-    print(f"Ticket Price: ₹{ticketPrice}")
-    print(f"CGST: ₹{gst/2}")
-    print(f"SGST: ₹{gst/2}")
-    print(f"Total GST: ₹{gst}")
+#     print(f"Ticket Price: ₹{ticketPrice}")
+#     print(f"CGST: ₹{gst/2}")
+#     print(f"SGST: ₹{gst/2}")
+#     print(f"Total GST: ₹{gst}")
 
-    print("===============")
+#     print("===============")
     
-    print(f"Final Cost: {ticketPrice+gst}")
+#     print(f"Final Cost: {ticketPrice+gst}")
 
-    print("1] Book Ticket")
-    print("2] Cancel Payment")
+#     print("1] Book Ticket")
+#     print("2] Cancel Payment")
 
-    opt = input("Choose an option: ")
+#     opt = input("Choose an option: ")
 
-    try:
-        opt = int(opt)
+#     try:
+#         opt = int(opt)
 
-    except ValueError:
-        print("WRONG OPTION SELECTED")
-        Confirm(user_info, movie)
+#     except ValueError:
+#         print("WRONG OPTION SELECTED")
+#         Confirm(user_info, movie)
 
-    if opt == 1:
-        try:
+#     if opt == 1:
+#         try:
              
-            is_booked = hlp.book_ticket(user_info, movie, (ticketPrice + gst))
+#             is_booked = hlp.book_ticket(user_info, movie, (ticketPrice + gst))
+
+#             if is_booked:
+#                 print("Ticket Booked... Enjoy your movie!")
+#                 Home(user_info)
+#             else:
+#                 print("Payment could not be processed")
+#                 Confirm(user_info, movie)
+
+#         except Exception as e:
+#             print(e)
+#             Confirm(user_info, movie)
+
+#     elif opt == 2:
+#         # Assuming there's a function named Book
+#         Book(user_info)
+#     else:
+#         print("WRONG OPTION SELECTED")
+#         Confirm(user_info, movie)
+
+def display_theater(seats):
+    for row in seats:
+        row_str = ""
+        for seat in row:
+            row_str += seat + " "
+        print(row_str)
+
+def select_seat(seats, row_num, seat_num):
+    if seats[row_num][seat_num] == "✅":
+        print("Sorry, this seat is already taken.")
+    else:
+        seats[row_num][seat_num] = "✅"
+        print("Seat selected!")
+
+def create_theater(rows, seats_per_row):
+    theater = []
+    for _ in range(rows):
+        row = ["O"] * seats_per_row
+        theater.append(row)
+    return theater
+
+def book_seats(num_tickets):
+    rows = 5
+    seats_per_row = 10
+    theater_seats = create_theater(rows, seats_per_row)
+    for _ in range(num_tickets):
+        
+        while True:
+            display_theater(theater_seats)
+
+            row_num = int(input(f"Enter the row number (0 to {rows - 1}): "))
+            seat_num = int(input(f"Enter the seat number (0 to {seats_per_row - 1}): "))
+
+            display_theater(theater_seats)
+
+            if 0 <= row_num < rows and 0 <= seat_num < seats_per_row:
+                select_seat(theater_seats, row_num, seat_num)
+                break
+            else:
+                print("Invalid row or seat number. Please try again.")
+
+
+def book_movie(user):
+    print("Book Movie:")
+    movie_id = input("Enter the Movie ID you want to book: ")
+    movie = hlp.get_movie_by_id(movie_id)
+
+    if not movie:
+        print("Movie not found.")
+
+    else:
+        print(f"Selected Movie: {movie[1]}")
+        showtimes = input("Enter the showtimes (comma-separated): ")
+        num_tickets = int(input("Enter the number of tickets: "))
+        book_seats(num_tickets)
+
+        # Calculate the total price
+        total_price = num_tickets * 200
+
+        print("Total price: Rs. ", total_price)
+        confirm = input("Confirm booking (yes/no): ").strip().lower()
+
+        if confirm == "yes":
+            is_booked = hlp.create_booking(user, movie, showtimes, num_tickets, total_price)
 
             if is_booked:
-                print("Ticket Booked... Enjoy your movie!")
-                Home(user_info)
+                Payment(total_price)
+
             else:
-                print("Payment could not be processed")
-                Confirm(user_info, movie)
+                print("Booking Failed")
 
-        except Exception as e:
-            print(e)
-            Confirm(user_info, movie)
-
-    elif opt == 2:
-        # Assuming there's a function named Book
-        Book(user_info)
-    else:
-        print("WRONG OPTION SELECTED")
-        Confirm(user_info, movie)
+        else:
+            print("Booking canceled.")
 
 def Search(data):
     name = input("Enter Movie Name: ")
@@ -192,7 +266,6 @@ def Search(data):
     if movies_data == []:
         print("\nNo Movie Found\n")
         Home(data)
-
 
     print("\nMovies: ")
     for movie in movies_data:
@@ -300,6 +373,9 @@ def MovieSettings(user_info):
         else:
             Home(user_info)
 
+def CancelTicket():
+    pass
+
 def Tickets(user_info):
     tickets = hlp.get_tickets_by_user_id(user_info)
     data = []
@@ -335,8 +411,24 @@ def Tickets(user_info):
     elif opt == 2:
         Home(user_info)
 
-def Home(user_info):
+def Payment(cost):
+    print('1] Payment by Credit/Debit Card')
+    print('2] Payment by UPI')
+    
+    opt = int(input('Choose Option: '))
 
+    if opt == 1:
+        int(input('Enter Creditcard number: '))
+        int(input('Enter CVV: '))
+        print(f'Payment of ₹{cost} done successfully\n')
+
+    if opt == 2:
+        int(input('Enter UPI-id: '))
+        int(input('Enter pin: '))
+        print(f'Payment of ₹{cost} done successfully\n')
+
+
+def Home(user_info):
     if user_info['is_admin'] == "False":
         while True:
             print(f"Welcome, {user_info['name']}!")
@@ -356,7 +448,7 @@ def Home(user_info):
                 Home(user_info)
 
             if opt == 1:
-                Book(user_info)
+                book_movie(user_info)
 
             elif opt == 2:
                 Search(user_info)

@@ -126,8 +126,19 @@ def book_ticket(user_info, movie, cost):
 
     return True
 
+def create_booking(user, movie, showtimes, num_tickets, total_price):
+    try:
+        insert_booking_query = "INSERT INTO Ticket (user_id, movie_id, showtimes, num_tickets, total_price) VALUES (%s, %s, %s, %s, %s)"
+        cur.execute(insert_booking_query, (user['id'], movie[0], showtimes, num_tickets, total_price))
+        con.commit()
+
+        return True
+    
+    except:
+        return False
+
 def get_tickets_by_user_id(user_id):
-    cur.execute(f"SELECT Ticket.id, Ticket.user_id, Ticket.movie_id, Ticket.cost FROM Ticket, User WHERE User.id = Ticket.user_id && User.id = {user_id['id']}")
+    cur.execute(f"SELECT * FROM Ticket, User WHERE User.id = Ticket.user_id && User.id = {user_id['id']}")
     tickets = cur.fetchall()
 
     return tickets
