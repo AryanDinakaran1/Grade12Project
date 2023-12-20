@@ -19,15 +19,39 @@ def SignUp():
     Home(data)
 
 def SignIn():
-    email = input("Enter Email: ")
-    password = input("Enter Password: ")
+    print("1) User")
+    print("2) Admin")
+    c = int(input("Enter your choice: "))
+    if c ==1:        
+        email = input("Enter Email: ")
+        password = input("Enter Password: ")
 
-    data = {
-        'email' : email,
-        'password' : password,
-    }
+        data = {
+            'email' : email,
+            'password' : password,
+        }
 
-    hlp.SignIn(data)
+        hlp.SignIn(data)
+    elif c==2:
+        email = input("Enter Email: ")
+        password = input("Enter Password: ")
+        if email!= "aryandinakaran@protonmail.com" and password != "HelloWorld@123":
+            print("Error! Wrong credentials")
+            print("Signed is as a user")
+            data = {
+                'email' : email,
+                'password' : password,
+            }
+
+            hlp.SignIn(data)
+        else:
+            print("Signed in as an admin")
+            data = {
+                'email' : email,
+                'password' : password,
+            }
+
+            hlp.SignIn(data)   
 
 def Authentication():
 
@@ -58,19 +82,19 @@ def Authentication():
             print("WRONG OPTION SELECTED\n")
             Authentication()
 
+def select_seat(seats, row_num, seat_num):
+    if seats[row_num][seat_num] == "X":
+        print("Sorry, this seat is already taken.")
+        return False
+    else:
+        seats[row_num][seat_num] = "X"
+        print("Seat selected!")
+        return True
+
 def display_theater(seats):
     for row in seats:
-        row_str = ""
-        for seat in row:
-            row_str += seat + " "
-        print(row_str)
-
-def select_seat(seats, row_num, seat_num):
-    if seats[row_num][seat_num] == "✅":
-        print("Sorry, this seat is already taken.")
-    else:
-        seats[row_num][seat_num] = "✅"
-        print("Seat selected!")
+        print(" ".join(row))
+    print()
 
 def create_theater(rows, seats_per_row):
     theater = []
@@ -83,21 +107,26 @@ def book_seats(num_tickets):
     rows = 5
     seats_per_row = 10
     theater_seats = create_theater(rows, seats_per_row)
-    for _ in range(num_tickets):
-        
-        while True:
-            display_theater(theater_seats)
 
+    for _ in range(num_tickets):
+        display_theater(theater_seats)
+
+        while True:
             row_num = int(input(f"Enter the row number (0 to {rows - 1}): "))
             seat_num = int(input(f"Enter the seat number (0 to {seats_per_row - 1}): "))
 
-            display_theater(theater_seats)
-
             if 0 <= row_num < rows and 0 <= seat_num < seats_per_row:
-                select_seat(theater_seats, row_num, seat_num)
-                break
+                if select_seat(theater_seats, row_num, seat_num):
+                    break
             else:
                 print("Invalid row or seat number. Please try again.")
+
+    # Display the final state of the theater after booking all tickets
+    display_theater(theater_seats)
+
+
+
+
 
 
 def book_movie(user):
